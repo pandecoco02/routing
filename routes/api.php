@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\TransactionTypeController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
+Route::post('/setpassword', [AuthController::class, 'storePassword']);
 
-Route::resource('/roles', RoleController::class);
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::resource('/roles', RoleController::class);
+    Route::resource('/users', UserController::class);
+});

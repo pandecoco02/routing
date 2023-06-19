@@ -25,12 +25,13 @@ export default {
     },
     actions:{
         login({commit}){
-            return axios.get('/api/user').then(({data})=>{
-                console.log(2);
+            return axios.get('/user').then(({data})=>{
                 commit('SET_USER',data)
                 commit('SET_AUTHENTICATED',true)
                 router.push({name:'home'})
-            }).catch(({response:{data}})=>{
+                location.reload();
+            }).catch((error)=>{
+                console.log(error);
                 commit('SET_USER',{})
                 commit('SET_AUTHENTICATED',false)
             })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, defineEmits, defineProps, watch, ref } from "vue";
 import useRoles from "../../../composables/roles";
-const { errors, storeRole, updateRole } = useRoles();
+const { errors, is_success, storeRole, updateRole } = useRoles();
 
 const emit = defineEmits(["reloadRoles", "input"]);
 const props = defineProps({
@@ -43,8 +43,10 @@ const saveRole = async () => {
     } else {
         await storeRole({ ...form });
     }
-    emit("reloadRoles");
-    emit("input", false);
+    if (is_success.value) {
+        emit("reloadRoles");
+        emit("input", false);
+    }
 };
 
 const closeDialog = (value) => {
@@ -59,38 +61,38 @@ const closeDialog = (value) => {
                 <span class="text-h5">Role</span>
             </v-card-title>
             <v-card-text>
-                <form class="space-y-6" @submit.prevent="saveRole">
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field
-                                label="Role*"
-                                v-model="form.name"
-                                required
-                            ></v-text-field>
-                        </v-col>
-                        <v-col cols="12">
-                            <v-text-field
-                                label="Description"
-                                v-model="form.description"
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <v-text-field
+                            label="Role*"
+                            v-model="form.name"
+                            :error-messages="
+                                errors['name'] ? errors['name'] : []
+                            "
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                        <v-text-field
+                            label="Description"
+                            v-model="form.description"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
 
-                    <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
 
-                    <v-btn
-                        class="ma-2"
-                        color="blue-grey-lighten-1"
-                        @click="closeDialog(false)"
-                    >
-                        <v-icon start icon="mdi-minus-circle"></v-icon>
-                        Cancel
-                    </v-btn>
-                    <v-btn class="ma-2" color="blue-darken-1" type="submit">
-                        Save
-                        <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
-                    </v-btn>
-                </form>
+                <v-btn
+                    class="ma-2"
+                    color="blue-grey-lighten-1"
+                    @click="closeDialog(false)"
+                >
+                    <v-icon start icon="mdi-minus-circle"></v-icon>
+                    Cancel
+                </v-btn>
+                <v-btn class="ma-2" color="blue-darken-1" @click="saveRole">
+                    Save
+                    <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
+                </v-btn>
             </v-card-text>
         </v-card>
     </v-dialog>

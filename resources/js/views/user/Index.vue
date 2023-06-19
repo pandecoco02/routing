@@ -1,59 +1,59 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import useRoles from "../../../composables/roles";
-import RoleForm from "../../../components/settings/role/Form.vue";
+import UserForm from "../../components/users/Form.vue";
+import useUsers from "../../composables/users";
 import { VDataTable } from "vuetify/labs/VDataTable";
 
-const { roles, pagination, query, is_loading, getRoles, destroyRole } =
-    useRoles();
-const role = ref({});
+const { users, pagination, query, is_loading, getUsers, destroyUser } =
+    useUsers();
+
+const user = ref({});
 const show_form_modal = ref(false);
 const headers = [
-    {
-        title: "Name",
-        align: "start",
-        sortable: false,
-        key: "name",
-    },
-    { title: "Desription", key: "description" },
+    { title: "Name", key: "name" },
+    { title: "Email", key: "email" },
+    { title: "Roles", key: "user_roles" },
     { title: "", key: "actions" },
 ];
-
 onMounted(() => {
-    reloadRoles();
+    reloadUsers();
 });
 
-const deleteRole = async (id) => {
-    await destroyRole(id);
+const reloadUsers = async () => {
+    await getUsers();
+    user.value = {};
 };
 
-const reloadRoles = async () => {
-    await getRoles();
-    role.value = {};
-};
-
-const updateRole = async (row) => {
-    role.value = row;
+const updateUser = async (row) => {
+    user.value = row;
     show_form_modal.value = true;
+    console.log(user.value);
+};
+const deleteUser = async (id) => {
+    await destroyUser(id);
 };
 
-const showRoleForm = async (is_show) => {
-    role.value = {};
+const showUserForm = async (is_show) => {
+    user.value = {};
     show_form_modal.value = is_show;
 };
 </script>
 <template>
     <div style="text-align: end">
-        <v-btn class="ma-2" color="blue-darken-1" @click="showRoleForm(true)">
+        <v-btn
+            class="ma-2"
+            color="blue-darken-1"
+            @click="showUserForm(true)"
+        >
             <v-icon start icon="mdi-plus"></v-icon>
-            Role
+            User
         </v-btn>
     </div>
     <v-card>
         <div
             class="overflow-hidden overflow-x-auto min-w-full align-middle sm:rounded-md"
         >
-            <v-card-title>List of Roles </v-card-title>
+            <v-card-title>List of Users </v-card-title>
             <v-divider class="mx-4 mb-1"></v-divider>
             <v-card-title>
                 <v-text-field
@@ -66,12 +66,27 @@ const showRoleForm = async (is_show) => {
             </v-card-title>
             <v-data-table
                 :headers="headers"
-                :items="roles"
+                :items="users"
                 :search="query.search"
                 class="elevation-1"
                 :loading="is_loading"
                 loading-text="Loading... Please wait"
             >
+                <template v-slot:item.name="{ item }">
+                    {{ item.raw.first_name +
+                        " " +
+                        (item.raw.middle_name ? item.raw.middle_name : "") +
+                        " " +
+                        item.raw.last_name +
+                        " " +
+                        (item.raw.extension_name ? item.raw.extension_name : "")
+                    }}
+                </template>
+                <template v-slot:item.user_roles="{ item }">
+                    <span v-for="role in item.raw.roles">
+                        {{ role.name }},
+                    </span>
+                </template>
                 <template v-slot:item.actions="{ item }">
                     <v-menu open-on-hover>
                         <template v-slot:activator="{ props }">
@@ -85,7 +100,7 @@ const showRoleForm = async (is_show) => {
                                 <v-btn
                                     width="100%"
                                     color="green"
-                                    @click="updateRole(item.raw)"
+                                    @click="updateUser(item.raw)"
                                     size="small"
                                 >
                                     Edit
@@ -95,7 +110,7 @@ const showRoleForm = async (is_show) => {
                                     width="100%"
                                     class="mt-2"
                                     color="red"
-                                    @click="deleteRole(item.raw.id)"
+                                    @click="deleteUser(item.raw.id)"
                                     size="small"
                                 >
                                     Delete
@@ -116,7 +131,7 @@ const showRoleForm = async (is_show) => {
                                 v-model="query.page"
                                 :length="pagination.last_page"
                                 circle
-                                @click="getRoles"
+                                @click="getUsers"
                             ></v-pagination>
                         </div>
                     </div>
@@ -124,10 +139,10 @@ const showRoleForm = async (is_show) => {
             </v-data-table>
         </div>
     </v-card>
-    <role-form
+    <user-form
         :value="show_form_modal"
-        :role="role"
-        @reloadRoles="reloadRoles"
-        @input="showRoleForm"
+        :user="user"
+        @reloadUsers="reloadUsers"
+        @input="showUserForm"
     />
 </template>

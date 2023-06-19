@@ -1,10 +1,10 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function useRoles() {
-    const role = ref(null);
-    const roles = ref([]);
+export default function useUsers() {
+    const user = ref(null);
+    const users = ref([]);
     const is_success = ref(false);
     const is_loading = ref(false);
     const pagination = ref({});
@@ -15,39 +15,49 @@ export default function useRoles() {
 
     const errors = ref({});
 
-    const getRoles = async (params = {}, type = "") => {
+    const getUsers = async (params = {}, type = "") => {
         is_loading.value = true;
 
         let query_str = { ...query.value, ...params };
-        let url = type == "client" ? "/form/roles" : "/roles";
+        let url = type == "client" ? "/form/users" : "/users";
         await axios
             .get(`${url}?page=${query.value.page}`, { params: query_str })
             .then((response) => {
-                roles.value = response.data.data;
+                users.value = response.data.data;
                 pagination.value = response.data.meta;
                 is_loading.value = false;
             });
     };
 
-    const getRole = async (id) => {
-        let response = await axios.get(`/roles/${id}`);
-        role.value = response.data;
+    const getUser = async (id) => {
+        let response = await axios.get(`/users/${id}`);
+        user.value = response.data;
         is_loading.value = false;
     };
 
-    const storeRole = async (data) => {
+    const storeUser = async (data) => {
         is_loading.value = true;
         errors.value = "";
         try {
-            await axios.post("/roles", data).then((response) => {
-                Swal.fire({
-                    title: "Success",
-                    icon: "success",
-                    text: response.data.message,
-                });
-                errors.value = {};
-                is_loading.value = false;
-                is_success.value = true;
+            await axios.post("/users", data).then((response) => {
+                if (response.data.error) {
+                    Swal.fire({
+                        title: "error",
+                        icon: "error",
+                        text: response.data.message,
+                    });
+
+                    errors.value = response.data.message;
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        icon: "success",
+                        text: response.data.message,
+                    });
+                    errors.value = {};
+                    is_loading.value = false;
+                    is_success.value = true;
+                }
             });
         } catch (e) {
             console.log(e);
@@ -58,13 +68,13 @@ export default function useRoles() {
         }
     };
 
-    const updateRole = async (updated_role) => {
+    const updateUser = async (updated_user) => {
         errors.value = "";
         try {
             is_loading.value = true;
-            role.value = updated_role;
+            user.value = updated_user;
             await axios
-                .patch(`/roles/${role.value.id}`, role.value)
+                .patch(`/users/${user.value.id}`, user.value)
                 .then((response) => {
                     Swal.fire({
                         title: "Success",
@@ -83,7 +93,7 @@ export default function useRoles() {
         }
     };
 
-    const destroyRole = async (id) => {
+    const destroyUser = async (id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -95,9 +105,9 @@ export default function useRoles() {
         }).then((result) => {
             if (result.value) {
                 axios
-                    .delete(`/roles/${id}`)
+                    .delete(`/users/${id}`)
                     .then((response) => {
-                        getRoles(query.value);
+                        getUsers(query.value);
                         Swal.fire("Deleted!", response.data.message, "success");
                     })
                     .catch(() => {
@@ -114,15 +124,15 @@ export default function useRoles() {
     return {
         errors,
         pagination,
-        is_success,
         is_loading,
         query,
-        role,
-        roles,
-        getRoles,
-        getRole,
-        storeRole,
-        updateRole,
-        destroyRole,
+        is_success,
+        user,
+        users,
+        getUsers,
+        getUser,
+        storeUser,
+        updateUser,
+        destroyUser,
     };
 }

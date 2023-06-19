@@ -13,14 +13,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = [
-            [
-                'name' => 'John Doe',
-                'email' => 'johndoe@example.com',
-                'password' => bcrypt('password123'),
-            ],
-        ];
-
-        User::insert($users);
+        $user = new User();
+        $user->email = 'superadmin@gmail.com';
+        $user->password = bcrypt('*1234#');
+        $user->first_name = 'super';
+        $user->last_name = 'admin';
+        $user->position = 'admin';
+        $user->save();
+        $user->roles()->sync([1]);
     }
 }

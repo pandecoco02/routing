@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { RouterLink } from "vue-router";
-import axios from "axios";
+import useAuth from "../../../composables/auth.js";
+
+const { logout } = useAuth();
 
 const props = defineProps({
     drawer: {
-      type: Boolean,
-      required: true
-    }
+        type: Boolean,
+        required: true,
+    },
 });
 
 const clipped = ref(true);
@@ -23,36 +25,32 @@ watch(
 
 const items = [
     { title: "Dashboard", icon: "mdi-home", route: "/dashboard" },
-    { title: "Role", icon: "mdi-form-dropdown", route: "/roles" },
+    { title: "Accounts", icon: "mdi-account-box", route: "/users" },
+];
+
+const libraries = [
+    { title: "Role", route: "/roles" },
 ];
 
 const Logout = async () => {
-    await axios
-        .post("/logout")
-        .then(() => {
-            localStorage.clear();
-            location.reload();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    await logout();
 };
 </script>
 
 <template>
-  <v-navigation-drawer
+    <v-navigation-drawer
         v-model="drawer"
         app
         :mini-variant.sync="mini"
         :clipped="clipped"
     >
         <div class="project-name">
-          <RouterLink to="/dashboard">
-              <h5> 
-                <v-icon small>mdi-note-text-outline</v-icon> 
-                Document Tracker
-              </h5>
-          </RouterLink>
+            <RouterLink to="/dashboard">
+                <h6>
+                    <v-icon small>mdi-note-text-outline</v-icon>
+                    Occupational Permit
+                </h6>
+            </RouterLink>
         </div>
 
         <v-list dense>
@@ -62,56 +60,40 @@ const Logout = async () => {
                 :to="item.route"
                 router
             >
-            <span class="menu-item">
-              <v-icon small>{{ item.icon }}</v-icon>
-              <span>{{ item.title }}</span>
-            </span>
+                <span class="menu-item">
+                    <v-icon small>{{ item.icon }}</v-icon>
+                    <span>{{ item.title }}</span>
+                </span>
             </v-list-item>
-        </v-list>
 
-        <v-list-item-group class="sidebar-bottom">
-          <v-list-item>
-            <template v-slot:append>
-                <v-icon small @click="Logout">mdi-logout-variant</v-icon>
-            </template>
-          </v-list-item>
-        </v-list-item-group>
+            <v-list-group>
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        >
+                        <span class="menu-item">
+                            <v-icon small>mdi-form-dropdown</v-icon>
+                            <span>Libraries</span>
+                        </span>
+                    </v-list-item>
+                </template>
+
+                <v-list-item
+                    v-for="item in libraries"
+                    :key="item.title"
+                    :to="item.route"
+                    :title="item.title"
+                    class="ml-10"
+                    router
+                ></v-list-item>
+            </v-list-group>
+            <v-list-item-group class="sidebar-bottom">
+                <v-list-item>
+                    <template v-slot:append>
+                        <v-icon small @click="Logout">mdi-logout-variant</v-icon>
+                    </template>
+                </v-list-item>
+            </v-list-item-group>
+        </v-list>
     </v-navigation-drawer>
 </template>
-
-<style>
-.menu-item{
-  margin-left: 10px;
-  color: white;
-}
-
-.menu-item span{
-  margin-left: 20px;
-}
-
-.project-name {
-  padding: 25px;
-  text-transform: uppercase;
-  border-bottom: 0.5px solid #41545f;
-}
-.project-name a:link { 
-  text-decoration: none; 
-  color: #8ed4ff; 
-}
-
-.v-navigation-drawer__content {
-  background-color: #293742;
-}
-
-.v-list-item--active{
-  background: #137CBD;
-}
-
-.sidebar-bottom {
-  background: #222C35;
-  position: fixed !important;
-  bottom: 0 !important;
-  width: 100%;
-  color: rgb(136, 134, 134);
-}
-</style>

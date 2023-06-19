@@ -1,20 +1,20 @@
-import { createWebHistory, createRouter } from 'vue-router'
-import store from '@/store'
+import { createWebHistory, createRouter } from "vue-router";
+import store from "@/store";
 
 /* Guest Component */
-const Login = () => import('@/views/auth/Login.vue')
+const Login = () => import("@/views/auth/Login.vue");
 /* Guest Component */
 
 /* Layouts */
-const Authenticated = () => import('@/components/layouts/App.vue')
-const Guest = () => import('@/components/layouts/Guest.vue')
+const Authenticated = () => import("@/components/layouts/App.vue");
+const Guest = () => import("@/components/layouts/Guest.vue");
 /* Layouts */
 
 /* Authenticated Component */
-const Dashboard = () => import('@/views/Dashboard.vue')
+const Dashboard = () => import("@/views/Dashboard.vue");
 const Roles = () => import("@/views/settings/libraries/Roles.vue");
+const Users = () => import("@/views/user/Index.vue");
 /* Authenticated Component */
-
 
 const routes = [
     {
@@ -23,7 +23,7 @@ const routes = [
         component: Guest,
         meta: {
             middleware: "guest",
-            title: `Guest`,
+            title: `Occupational Permit`,
         },
     },
     {
@@ -36,52 +36,63 @@ const routes = [
         },
     },
     {
+        name: "home",
         path: "/home",
         component: Authenticated,
         meta: {
-            middleware: "auth"
+            middleware: "auth",
+            title: `Home | Occupational Permit`,
         },
         children: [
             {
                 name: "dashboard",
-                path: '/dashboard',
+                path: "/dashboard",
                 component: Dashboard,
                 meta: {
-                    title: `Dashboard`
-                }
+                    title: `Dashboard`,
+                },
             },
             {
                 name: "roles",
-                path: '/roles',
+                path: "/roles",
                 component: Roles,
-                name: 'roles.index',
+                name: "roles.index",
                 meta: {
-                    title: `Roles`
-                }
+                    title: `Roles`,
+                },
             },
-        ]
-    }
-]
+            {
+                name: "users",
+                path: "/users",
+                component: Users,
+                name: "users.index",
+                meta: {
+                    title: `Users`,
+                },
+            },
+        ],
+    },
+];
 
 const router = createRouter({
     history: createWebHistory(),
     routes, // short for `routes: routes`
-})
+});
 
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title
+    document.title = to.meta.title;
     if (to.meta.middleware == "guest") {
         if (store.state.auth.authenticated) {
-            next({ name: "dashboard" })
+            next({ name: "dashboard" });
         }
-        next()
+        next();
     } else {
         if (store.state.auth.authenticated) {
-            next()
+            next();
         } else {
-            next({ name: "guest" })
+            next({ name: "login" });
         }
     }
-})
+});
 
-export default router
+export default router;
