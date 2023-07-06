@@ -27,7 +27,7 @@ watch(
         form.ExtensionName = value.ExtensionName;
         form.Age = value.Age;
         form.CivilStatus = value.CivilStatus;
-        form.Photo = value.Photo;       
+        form.Photo = value.Photo;           
     }
 );
 const initialState = {
@@ -147,10 +147,7 @@ const closeDialog = (value) => {
                                         : []
                                 "
                             ></v-text-field>
-                            <v-btn class="ma-2" color="blue-darken-1">
-                                Upload a Photo
-                                <v-icon end icon="mdi-upload"></v-icon>
-                            </v-btn>
+                            <v-file-input v-model="form.Photo" accept="image/*" label="add Photo*" required></v-file-input>
                             
                         </v-row>
                     </v-col>
