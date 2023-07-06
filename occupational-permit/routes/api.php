@@ -29,5 +29,5 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
-    Route::resource('/applicants',ApplicantController::class);
+    Route::resource('/applicants',ApplicantController::class );
 });

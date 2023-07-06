@@ -29,7 +29,7 @@ class OccupationalPermit extends Model
         'EmploymentTypeID',
         'Status',
     ];
-    public function applicants(){ 
-        return $this->belongsToOne(Applicant::class, 'OccupationalPermit_id', 'Applicant_id','id');
+    public function getApplicant(){ 
+        return $this->hasOne(Applicant::class, 'id');
     }
 }

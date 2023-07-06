@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('occupational_permits', function (Blueprint $table) {
-            $table->id('OccupationalPermit_id');
+            $table->id('OccupationalPermit_id')->unique();
             $table->string('CommunityTaxNumber');
             $table->double('CommunityTaxFee');
             $table->dateTime('CommunityTaxDatePaid');

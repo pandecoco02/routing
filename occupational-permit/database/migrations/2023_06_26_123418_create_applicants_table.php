@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('applicants', function (Blueprint $table) {
-            $table->bigIncrements("id");
+            $table->bigIncrements("id")->unique();
             $table->string('LastName');
             $table->string('FirstName');
             $table->string('MiddleName') ->nullable();
@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('Age');
             $table->string('CivilStatus');
             $table->string('Photo') -> nullable();
+            //$table->string('OccupationalPermit_id');
             $table->timestamps();
         });
     }
