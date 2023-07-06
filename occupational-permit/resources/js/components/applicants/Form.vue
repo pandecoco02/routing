@@ -149,10 +149,68 @@ const closeDialog = (value) => {
                             ></v-text-field>
                             <v-file-input v-model="form.Photo" accept="image/*" label="add Photo*" required></v-file-input>
                             
-                        </v-row>
+                        </v-row> 
                     </v-col>
-                    <v-col cols="6">
-                        
+                        <v-col cols="6">
+                        <div class="custom-title d-flex">
+                            <p class="ml-6 pt-1">
+                                <span>Permit</span>
+                            </p>
+                        </div>
+                        <!-- <div class="custom-bg custom-bg2 mt-7 pt-5">
+                        <v-row>
+                            <v-text-field
+                                label="CommunityTaxNumber*"                                
+                            ></v-text-field>
+                        </v-row>
+
+                        <v-row>
+                            <v-text-field
+                                label="CommunityTaxDatePaid*"                                
+                            ></v-text-field>
+                        </v-row>
+
+                        <v-row>
+                            <v-text-field
+                                label="CommunityTaxFee*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="MayorsPermitNumber*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="MayorsPermitFee*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="MayorsPermitDatePaid*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="HealthCardNumber*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="PoliceClearanceNo*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="PoliceClearanceExpiryDate*"                                
+                            ></v-text-field>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="DateIssued*"                                
+                            ></v-text-field>
+                        </v-row>
+                    </div> -->
                       <!-- Save and Cancel Button   -->
                         <v-row class="mt-3 mb-5">
                             <v-btn class="ma-2" color="blue-darken-1" @click="saveApplicant">
@@ -168,7 +226,8 @@ const closeDialog = (value) => {
                                 Cancel
                             </v-btn>
                         </v-row>
-                    </v-col>
+                    
+                  </v-col>  
                 </v-row>
             </v-card-text>
         </v-card>
@@ -176,7 +235,7 @@ const closeDialog = (value) => {
     </v-dialog>
 
 
-    <!-- Persistent overlay -->
+   
     <v-dialog v-model="preloader" hide-overlay persistent width="300">
         <v-card color="primary" dark>
             <v-card-text>

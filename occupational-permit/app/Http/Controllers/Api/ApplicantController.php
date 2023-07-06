@@ -27,17 +27,6 @@ class ApplicantController extends Controller
         return ApplicantResource::collection($applicants);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
@@ -51,6 +40,7 @@ class ApplicantController extends Controller
             $applicant->ExtensionName = ucwords($request->ExtensionName);
             $applicant->Age = $request->Age;
             $applicant->CivilStatus = $request->CivilStatus;
+            //$applicant->Photo = $request->Photo;
             if ($request->hasFile('Photo')) {
                 $uploaded_image = $this->file_service->uploadImage($request->file('Photo'), config('enums.storage.clients') .'/'. $applicant->id, "CID");
                 if ($uploaded_image) {
@@ -75,6 +65,7 @@ class ApplicantController extends Controller
             $applicant->ExtensionName = ucwords($request->ExtensionName);
             $applicant->Age = $request->Age;
             $applicant->CivilStatus = $request->CivilStatus;
+
             if ($request->hasFile('Photo')) {
                 $uploaded_image = $this->file_service->uploadImage($request->file('Photo'), config('enums.storage.clients') .'/'. $applicant->id, "CID");
                 if ($uploaded_image) {

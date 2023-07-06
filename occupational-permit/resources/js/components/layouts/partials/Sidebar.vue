@@ -31,20 +31,28 @@ const items = [
     { title: "Applicant", icon: "mdi-human", route: "/applicants" },
 ];
 
+const employee = [
+    { title: "Dashboard", icon: "mdi-home", route: "/dashboard" },
+    { title: "Applicant", icon: "mdi-human", route: "/applicants" },
+];
+
+const employee_libraries =[
+    { title: "Transaction Log", icon: "mdi-home", route: "/dashboard" },
+];
 const libraries = [
     { title: "Role", route: "/roles" },
 ];
 
 // const hasRoles = (role) => {
-//     let same_role = false;
-//      let user = JSON.parse(localStorage.getItem("user"));
-//      for (const element of user.roles) {
-//          if (element.slug == role) {
-//             same_role = true;
-//          }
-//     }
+//      let same_role = false;
+//       let user = JSON.parse(localStorage.getItem("user"));
+//       for (const element of user.roles) {
+//           if (element.slug == role) {
+//              same_role = true;
+//           }
+//      }
 //      return same_role;
-//  };
+//   };
 
 const Logout = async () => {
     await logout();
@@ -68,6 +76,8 @@ const Logout = async () => {
         </div>
 
         <v-list dense>
+            
+            <!-- div v-if here to separate admin and employee -->
             <v-list-item
                 v-for="item in items"
                 :key="item.title"
@@ -79,7 +89,7 @@ const Logout = async () => {
                     <span>{{ item.title }}</span>
                 </span>
             </v-list-item>
-
+        
             <v-list-group>
                 <template v-slot:activator="{ props }">
                     <v-list-item
