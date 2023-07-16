@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+  
     public function up(): void
     {
         Schema::create('occupational_permits', function (Blueprint $table) {
@@ -25,7 +23,7 @@ return new class extends Migration
              $table->timestamp('DateIssued');
              $table->string('PermitNo');
              $table->dateTime('DateHired');
-             $table->string('ID');
+            
              $table->string('ApplicantID');
              $table->string('SignatoryID');
              $table->string('EmploymentTypeID');
@@ -35,9 +33,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('occupational_permits');

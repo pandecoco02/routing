@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\OccupationalPermit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\OccupationalPermitRequest;
 class OccupationalPermitController extends Controller
 {
     /**
@@ -27,7 +27,7 @@ class OccupationalPermitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function storeOccupationalPermit(OccupationalPermitRequest $request)
     {
         //
     }

@@ -29,9 +29,7 @@ class ApplicantController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            
-   
+        try {           
             $applicant = new Applicant();
 
             $applicant->LastName = ucwords($request->LastName);
