@@ -10,12 +10,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('occupational_permits', function (Blueprint $table) {
-            $table->id('OccupationalPermit_id')->unique();
+            $table->bigIncrements("id") ;
+            $table->unsignedBiginteger('Applicant_id')->unique();
             $table->string('CommunityTaxNumber');
-            $table->double('CommunityTaxFee');
+            $table->string('CommunityTaxFee');
             $table->dateTime('CommunityTaxDatePaid');
             $table->string('MayorsPermitNumber');
-            $table->double('MayorsPermitFee');
+            $table->string('MayorsPermitFee');
             $table->dateTime('MayorsPermitDatePaid');
              $table->string('HealthCardNumber');
              $table->string('PoliceClearanceNo');
@@ -23,13 +24,11 @@ return new class extends Migration
              $table->timestamp('DateIssued');
              $table->string('PermitNo');
              $table->dateTime('DateHired');
-            
-             $table->string('ApplicantID');
              $table->string('SignatoryID');
              $table->string('EmploymentTypeID');
              $table->string('Status');
             $table->timestamps();
-            $table->foreign('OccupationalPermit_id') -> references('id') -> on('applicants')->onDelete('cascade');
+            $table->foreign('Applicant_id') -> references('id') -> on('applicants')->onDelete('cascade');
         });
     }
 

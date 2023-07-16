@@ -18,4 +18,7 @@ class Applicant extends Model
         'CivilStatus',
         'Photo'
     ];
+    public function getPermit(){ 
+        return $this->hasMany(OccupationalPermit::class, 'OccupationalPermit_id');
+    }
 }

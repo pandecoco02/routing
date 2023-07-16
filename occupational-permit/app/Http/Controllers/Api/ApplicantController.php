@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Applicant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\ApplicantRequest;
 use App\Http\Resources\Applicant as ApplicantResource;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\FileService;
@@ -27,7 +28,7 @@ class ApplicantController extends Controller
         return ApplicantResource::collection($applicants);
     }
 
-    public function store(Request $request)
+    public function store(ApplicantRequest $request)
     {
         try {           
             $applicant = new Applicant();
@@ -51,7 +52,7 @@ class ApplicantController extends Controller
             return response()->json(['message' => $e->getMessage()]);
         }
     }
-    public function update(Request $request, $id)
+    public function update(ApplicantRequest $request, $id)
     {
        try
        { 

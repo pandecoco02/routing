@@ -15,6 +15,8 @@ const Dashboard = () => import("@/views/Dashboard.vue");
 const Roles = () => import("@/views/settings/libraries/Roles.vue");
 const Users = () => import("@/views/user/Index.vue");
 const Applicants = () => import("@/views/Employee/Index.vue");
+const Type = () => import ("@/views/settings/libraries/Types.vue");
+// const Permits = () => import
 /* Authenticated Component */
 
 const routes = [
@@ -78,6 +80,15 @@ const routes = [
                 component: Applicants,               
                 meta: {
                     title: `Applicant`,
+                },
+            },
+            {
+                name: "types",
+                path: "/types",
+                component: Type,    
+                name: "types.index",           
+                meta: {
+                    title: `Employment Types`,
                 },
             },
         ],

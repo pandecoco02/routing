@@ -6,6 +6,7 @@ use App\Models\OccupationalPermit;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\OccupationalPermitRequest;
+use Symfony\Component\HttpFoundation\Response;
 class OccupationalPermitController extends Controller
 {
     /**
@@ -16,20 +17,19 @@ class OccupationalPermitController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function storeOccupationalPermit(OccupationalPermitRequest $request)
     {
-        //
+    try{
+        
+    
+      } catch (\Exception $e) {
+        return response()->json(['message' => $e->getMessage()]);
+     }
     }
 
     /**

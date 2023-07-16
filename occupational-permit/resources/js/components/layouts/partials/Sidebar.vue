@@ -40,7 +40,10 @@ const employee_libraries =[
     { title: "Transaction Log", icon: "mdi-home", route: "/dashboard" },
 ];
 const libraries = [
+    { title: "Employment Type",  route: "/types" },
     { title: "Role", route: "/roles" },
+    { title: "Signatory", route: "/signatory" },
+    
 ];
 
 // const hasRoles = (role) => {

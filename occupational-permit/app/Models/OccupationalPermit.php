@@ -23,13 +23,10 @@ class OccupationalPermit extends Model
         'DateIssued',
         'PermitNo',
         'DateHired',
-        'ID',
         'ApplicantID',
         'SignatoryID',
         'EmploymentTypeID',
         'Status',
     ];
-    public function getApplicant(){ 
-        return $this->hasOne(Applicant::class, 'id');
-    }
+    
 }

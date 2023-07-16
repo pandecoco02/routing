@@ -6,10 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class RoleRequest extends FormRequest
+class EmploymentTypeRequest extends FormRequest
 {
 
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,11 +24,10 @@ class RoleRequest extends FormRequest
         } else {
             return [
                 'name' => 'required|string|max:255',
-                'id' => 'required|exists:roles,id|max:255'
+                'id' => 'required|exists:employmenttypes,id|max:255'
             ];
         }
     }
-
     public function messages()
     {
         return [
@@ -36,7 +35,6 @@ class RoleRequest extends FormRequest
             'id.required'  => 'Role is not exist'
         ];
     }
-
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json($validator->errors(), 422));

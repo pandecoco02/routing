@@ -7,17 +7,9 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TransactionTypeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ApplicantController;
+use App\Http\Controllers\Api\OccupationalPermitController;
+use App\Http\Controllers\Api\EmploymentTypeController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
@@ -30,4 +22,6 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
     Route::resource('/applicants',ApplicantController::class );
+    Route::resource('/permits',OccupationalPermitController::class );
+    Route::resource('/types',EmploymentTypeController::class );
 });
