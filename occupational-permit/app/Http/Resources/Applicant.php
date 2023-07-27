@@ -18,7 +18,8 @@ class Applicant extends JsonResource
             'ExtensionName' => $this->ExtensionName,
             'Age' => $this->Age,
             'CivilStatus' => $this->CivilStatus,
-            'Photo' => $this->Photo,                   
+            'Photo' => $this->Photo,    
+            'permit' => $this->occupational_permits ? OccupationalPermit::collection($this->occupational_permits) : [],               
         ];
     }
 }

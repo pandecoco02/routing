@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 
 const store = useStore();
 
+
 const user = computed(() => store.state.auth.user);
 </script>
 <template>

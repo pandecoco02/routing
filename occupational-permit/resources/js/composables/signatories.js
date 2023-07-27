@@ -1,11 +1,11 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function usePermits() {
-    const permit = ref(null);
-    const permits = ref([]);
-    const is_permitsuccess = ref(false);
+export default function useSignatories() {
+    const signatory = ref(null);
+    const signatories = ref([]);
+    const is_success = ref(false);
     const is_loading = ref(false);
     const pagination = ref({});
     const query = ref({
@@ -13,77 +13,87 @@ export default function usePermits() {
         page: 1,
     });
 
-    const permiterrors = ref({});
+    const errors = ref({});
 
-    const getPermits = async (params = {}, type = "") => {
+    const getSignatories = async (params = {}, type = "") => {
         is_loading.value = true;
 
         let query_str = { ...query.value, ...params };
-        let url = type == "client" ? "/form/permits" : "/permits";
+        let url = type == "client" ? "/form/signatories" : "/signatories";
         await axios
             .get(`${url}?page=${query.value.page}`, { params: query_str })
             .then((response) => {
-                permits.value = response.data.data;
+                signatories.value = response.data.data;
                 pagination.value = response.data.meta;
                 is_loading.value = false;
             });
     };
 
-    const getPermit = async (id) => {
-        let response = await axios.get(`/permits/${id}`);
-        permit.value = response.data;
+    const getSignatory = async (id) => {
+        let response = await axios.get(`/signatories/${id}`);
+        signatory.value = response.data;
         is_loading.value = false;
     };
 
-    const storePermit = async (data) => {
+    const storeSignatory = async (data) => {
         is_loading.value = true;
-        permiterrors.value = "";
+        errors.value = "";
         try {
-            await axios.post("/permits", data).then((response) => {
-                Swal.fire({
-                    title: "Success",
-                    icon: "success",
-                    text: response.data.message,
-                });
-                permiterrors.value = {};
-                is_loading.value = false;
-                is_permitsuccess.value = true;
+            await axios.post("/signatories", data).then((response) => {
+                if (response.data.error) {
+                    Swal.fire({
+                        title: "error",
+                        icon: "error",
+                        text: response.data.message,
+                    });
+
+                    errors.value = response.data.message;
+                } else {
+                    Swal.fire({
+                        title: "Success",
+                        icon: "success",
+                        text: response.data.message,
+                    });
+                    errors.value = {};
+                    is_loading.value = false;
+                    is_success.value = true;
+                }
             });
         } catch (e) {
             console.log(e);
             if (e.response.status === 422) {
-                permiterrors.value = e.response.data;
-                is_permitsuccess.value = false;
+                errors.value = e.response.data;
+                is_success.value = false;
             }
         }
     };
 
-    const updatePermit = async (updated_permit) => {
-        permiterrors.value = "";
+    const updateSignatory = async (updated_signatory) => {
+        errors.value = "";
         try {
             is_loading.value = true;
-            permit.value = updated_permit;
+            signatory.value = updated_signatory;
             await axios
-                .patch(`/permits/${permit.value.id}`, permit.value)
+                .patch(`/signatories/${signatory.value.id}`, signatory.value)
                 .then((response) => {
                     Swal.fire({
                         title: "Success",
                         icon: "success",
                         text: response.data.message,
                     });
-                    permiterrors.value = {};
+                    errors.value = {};
                     is_loading.value = false;
-                    is_permitsuccess.value = true;
+                    is_success.value = true;
                 });
         } catch (e) {
             if (e.response.status === 422) {
-                permiterrors.value = e.response.data;
-                is_permitsuccess.value = false;
+                errors.value = e.response.data;
+                is_success.value = false;
             }
         }
     };
 
-    const destroyPermit = async (id) => {
+    const destroySignatory = async (id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -95,9 +105,9 @@ export default function usePermits() {
         }).then((result) => {
             if (result.value) {
                 axios
-                    .delete(`/permits/${id}`)
+                    .delete(`/signatories/${id}`)
                     .then((response) => {
-                        getPermits(query.value);
+                        getSignatories(query.value);
                         Swal.fire("Deleted!", response.data.message, "success");
                     })
                     .catch(() => {
@@ -112,17 +122,17 @@ export default function usePermits() {
     };
 
     return {
-        permiterrors,
+        errors,
         pagination,
-        is_permitsuccess,
         is_loading,
         query,
-        permit,
-        permits,
-        getPermits,
-        getPermit,
-        storePermit,
-        updatePermit,
-        destroyPermit,
+        is_success,
+        signatory,
+        signatories,
+        getSignatories,
+        getSignatory,
+        storeSignatory,
+        updateSignatory,
+        destroySignatory,
     };
 }

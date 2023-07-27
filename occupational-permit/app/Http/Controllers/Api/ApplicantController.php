@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Applicant;
 use App\Http\Controllers\Controller;
+use App\Models\OccupationalPermit;
 use Illuminate\Http\Request;
 use App\Http\Requests\ApplicantRequest;
 use App\Http\Resources\Applicant as ApplicantResource;
@@ -47,7 +48,18 @@ class ApplicantController extends Controller
                 }
             }
             $applicant->save();
+          //  $this->storePermits($applicant->id, $request->occupational_permits);
             return response(['message' => 'Applicant has been sucessfully saved', 'data' => $applicant], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+    public function storePermits($id, $occupational_permits)
+    {
+        try {
+            $applicant = OccupationalPermit::findOrFail($id);
+            $applicant->occupational_permits()->sync($occupational_permits);
+            $applicant->update();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
@@ -64,14 +76,13 @@ class ApplicantController extends Controller
             $applicant->ExtensionName = ucwords($request->ExtensionName);
             $applicant->Age = $request->Age;
             $applicant->CivilStatus = $request->CivilStatus;
-
             if ($request->hasFile('Photo')) {
                 $uploaded_image = $this->file_service->uploadImage($request->file('Photo'), config('enums.storage.clients') .'/'. $applicant->id, "CID");
                 if ($uploaded_image) {
                     $applicant->Photo = $uploaded_image;
                 }
             }
-
+          //  $this->storeUserRoles($applicant->id, $request->occupational_permits);
             $applicant->update();
             return response(['message' => 'Applicant has been sucessfully saved', 'data' => $applicant], Response::HTTP_CREATED);
         } catch (\Exception $e) {
@@ -83,6 +94,5 @@ class ApplicantController extends Controller
     {
         Applicant::findOrFail($id)->delete();
         return response(['message' => 'Applicant has been sucessfully deleted'], Response::HTTP_OK);
-    
     }
 }

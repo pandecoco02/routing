@@ -16,7 +16,7 @@ const Roles = () => import("@/views/settings/libraries/Roles.vue");
 const Users = () => import("@/views/user/Index.vue");
 const Applicants = () => import("@/views/Employee/Index.vue");
 const Type = () => import ("@/views/settings/libraries/Types.vue");
-// const Permits = () => import
+const Signatory = () => import ("@/views/settings/libraries/Signatory.vue");
 /* Authenticated Component */
 
 const routes = [
@@ -73,7 +73,6 @@ const routes = [
                     title: `Users`,
                 },
             },
-            // Applicant view
             {
                 name: "applicants",
                 path: "/applicants",
@@ -89,6 +88,15 @@ const routes = [
                 name: "types.index",           
                 meta: {
                     title: `Employment Types`,
+                },
+            },
+            {
+                name: "signatories",
+                path: "/signatories",
+                component: Signatory,
+                name: "signatories.index",              
+                meta: {
+                    title: `Signatory`,
                 },
             },
         ],

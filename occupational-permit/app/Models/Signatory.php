@@ -18,4 +18,7 @@ class Signatory extends Model
         'OfficeName',
         'City'
     ];
+    public function applicants(){ 
+        return $this->belongsToMany(Applicant::class, 'id', 'OccupationalPermit_id');
+    }
 }

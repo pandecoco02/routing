@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { reactive, watch, ref, onMounted } from "vue";
 import useApplicants from "../../composables/applicants";
+import usePermits from "../../composables/permits";
+// import datetime from 'vuejs-datetimepicker';
 import VueMultiselect from "vue-multiselect";
-//import useRoles from "../../composables/roles";
 
 
+const {permiterrors, is_permitsuccess, storePermit,updatePermit} = usePermits();
 const { errors, is_success, storeApplicant, updateApplicant } = useApplicants();
-const emit = defineEmits(["reloadApplicants", "input"]);
+const emit = defineEmits(["reloadApplicants", "input", "reloadPermits"]);
 const props = defineProps({
     applicant: {
         type: Object,
@@ -16,7 +18,16 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    permit: {
+        type: Object,
+        default: null,
+    },
+    permitvalue: {
+        type: Boolean,
+        default: false,
+    },
 });
+
 watch(
     () => props.applicant,
     (value) => {
@@ -40,6 +51,21 @@ const initialState = {
     Age: null,
     CivilStatus: null,
     Photo: null,
+    CommunityTaxNumber: null,
+    CommunityTaxFee: null,
+    CommunityTaxDatePaid: null,
+    MayorsPermitNumber: null,
+    MayorsPermitFee: null,
+    MayorsPermitDatePaid: null,
+    HealthCardNumber: null,
+    PoliceClearanceNo: null,
+    PoliceClearanceExpiryDate: null,
+    DateIssued: null,
+    PermitNo: null,
+    DateHired: null,
+    SignatoryID: null,
+    EmploymentTypeID: null,
+    Status: null,
 };
 const form = reactive({ ...initialState });
 
@@ -150,6 +176,21 @@ const closeDialog = (value) => {
                             <v-file-input v-model="form.Photo" accept="image/*" label="add Photo*" required></v-file-input>
                             
                         </v-row> 
+                        <!-- Save and Cancel Button   -->
+                        <v-row class="mt-3 mb-5">
+                            <v-btn class="ma-2" color="blue-darken-1" @click="saveApplicant">
+                                Save
+                                <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
+                            </v-btn>
+                            <v-btn
+                                class="ma-2"
+                                color="blue-grey-lighten-1"
+                                @click="closeDialog(false)"
+                            >
+                                <v-icon start icon="mdi-minus-circle"></v-icon>
+                                Cancel
+                            </v-btn>
+                        </v-row>
                     </v-col>
                         <v-col cols="6">
                         <div class="custom-title d-flex">
@@ -157,7 +198,9 @@ const closeDialog = (value) => {
                                 <span>Permit</span>
                             </p>
                         </div>
-                        <!-- <div class="custom-bg custom-bg2 mt-7 pt-5">
+
+
+                        <div class="custom-bg custom-bg2 mt-7 pt-5">
                         <v-row>
                             <v-text-field
                                 label="CommunityTaxNumber*"                                
@@ -166,15 +209,15 @@ const closeDialog = (value) => {
 
                         <v-row>
                             <v-text-field
-                                label="CommunityTaxDatePaid*"                                
-                            ></v-text-field>
-                        </v-row>
-
-                        <v-row>
-                            <v-text-field
                                 label="CommunityTaxFee*"                                
                             ></v-text-field>
                         </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="CommunityTaxDatePaid*"                                
+                            ></v-text-field>
+                        </v-row>
+                       
                         <v-row>
                             <v-text-field
                                 label="MayorsPermitNumber*"                                
@@ -210,22 +253,25 @@ const closeDialog = (value) => {
                                 label="DateIssued*"                                
                             ></v-text-field>
                         </v-row>
-                    </div> -->
-                      <!-- Save and Cancel Button   -->
-                        <v-row class="mt-3 mb-5">
-                            <v-btn class="ma-2" color="blue-darken-1" @click="saveApplicant">
-                                Save
-                                <v-icon end icon="mdi-checkbox-marked-circle"></v-icon>
-                            </v-btn>
-                            <v-btn
-                                class="ma-2"
-                                color="blue-grey-lighten-1"
-                                @click="closeDialog(false)"
-                            >
-                                <v-icon start icon="mdi-minus-circle"></v-icon>
-                                Cancel
-                            </v-btn>
+                        <v-row>
+                            <v-text-field
+                                label="Signatory*"                                
+                            ></v-text-field>
+                        </v-row> 
+                        <v-row>
+                            <v-text-field
+                                label="EmploymentTypeID*"                                
+                            ></v-text-field>
                         </v-row>
+                        <v-row>
+                            <v-text-field
+                                label="Status*"                                
+                            ></v-text-field>
+                        </v-row>
+                    </div>
+
+
+                      
                     
                   </v-col>  
                 </v-row>

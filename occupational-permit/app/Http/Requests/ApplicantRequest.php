@@ -22,17 +22,17 @@ class ApplicantRequest extends FormRequest
                 'ExtensionName' => 'max:255',
                 'Age' => 'required|integer',
                 'CivilStatus' => 'required|string|max:255',
-                'Photo' => 'image|mimes:jpg,png,jpeg'
+                'Photo' => 'image|mimes:jpg,png,jpeg',
+                'permit' => 'string|max:255'
             ];
         } 
         else {
             return [
                 'LastName' => 'required|string|max:255',
                 'FirstName' => 'required|string|max:255',
-                'MiddleName' => 'string|max:255',
-                'ExtensionName' => 'max:255',
                 'Age' => 'required|integer',
-                'CivilStatus' => 'required|string|max:255'
+                'CivilStatus' => 'required|string|max:255',
+                'permit' => 'string|max:255'
                 //photo
             ];
         }
@@ -42,6 +42,8 @@ class ApplicantRequest extends FormRequest
         return [
             'LastName' => 'email is required.',
             'FirstName' => 'First Name is required.',
+            'Age' => 'Age is required.',
+            'CivilStatus' => 'Civil Status is required.',
         ];
     }
 }

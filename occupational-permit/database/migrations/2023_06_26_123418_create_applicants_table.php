@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('Age');
             $table->string('CivilStatus');
             $table->string('Photo') -> nullable();
-            //$table->string('OccupationalPermit_id');
+            
             $table->timestamps();
         });
     }

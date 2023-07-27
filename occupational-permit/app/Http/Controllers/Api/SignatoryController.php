@@ -9,7 +9,6 @@ use App\Http\Requests\SignatoryRequest;
 use App\Http\Resources\Signatory as SignatoryResource;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class SignatoryController extends Controller
 {
     public function index(Request $request)
@@ -56,7 +55,7 @@ class SignatoryController extends Controller
             $signatory->DivisionName = ucwords($request->DivisionName);
             $signatory->OfficeName = ucwords($request->OfficeName);
             $signatory->City = ucwords($request->City);
-            $signatory->save();
+            $signatory->update();
             return response(['message' => 'Signatory Officer has been sucessfully updated', 'data' => $signatory], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);

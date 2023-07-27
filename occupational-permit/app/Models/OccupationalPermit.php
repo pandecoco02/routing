@@ -10,7 +10,8 @@ class OccupationalPermit extends Model
     use HasFactory;
     protected $fillable = [
         
-        'OccupationalPermit_id',
+        'id',
+        'Applicant_id',
         'CommunityTaxNumber',
         'CommunityTaxFee',
         'CommunityTaxDatePaid',
@@ -23,10 +24,11 @@ class OccupationalPermit extends Model
         'DateIssued',
         'PermitNo',
         'DateHired',
-        'ApplicantID',
         'SignatoryID',
         'EmploymentTypeID',
         'Status',
     ];
-    
+    public function applicants(){ 
+        return $this->hasOne(Applicant::class, 'id');
+    }
 }

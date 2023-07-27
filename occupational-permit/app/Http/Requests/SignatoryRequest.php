@@ -19,7 +19,7 @@ class SignatoryRequest extends FormRequest
                 'LastName' => 'required|string|max:255',
                 'FirstName' => 'required|string|max:255',
                 'MiddleName' => 'string|max:255',
-                'ExtensionName' => 'required|string|max:255',
+                'ExtensionName' => 'string|max:255',
                 'Position' => 'required|string|max:255',
                 'DivisionName' => 'required|string|max:255',
                 'OfficeName' => 'required|string|max:255',
@@ -31,12 +31,19 @@ class SignatoryRequest extends FormRequest
                 'LastName' => 'required|string|max:255',
                 'FirstName' => 'required|string|max:255',
                 'MiddleName' => 'string|max:255',
-                'ExtensionName' => 'required|string|max:255',
+                'ExtensionName' => 'string|max:255',
                 'Position' => 'required|string|max:255',
                 'DivisionName' => 'required|string|max:255',
                 'OfficeName' => 'required|string|max:255',
-                'City' => 'required|string|max:255',
+                'City' => 'string|max:255',
             ];
         }
+    }
+    public function messages()
+    {
+        return [
+            'LastName' => 'Last Name is required.',
+            'FirstName' => 'First Name is required.',
+        ];
     }
 }
