@@ -10,7 +10,7 @@ class OccupationalPermit extends Model
     use HasFactory;
     protected $fillable = [
         
-        'id',
+        'permit_id',
         'Applicant_id',
         'CommunityTaxNumber',
         'CommunityTaxFee',
@@ -22,7 +22,6 @@ class OccupationalPermit extends Model
         'PoliceClearanceNo',
         'PoliceClearanceExpiryDate',
         'DateIssued',
-        'PermitNo',
         'DateHired',
         'SignatoryID',
         'EmploymentTypeID',

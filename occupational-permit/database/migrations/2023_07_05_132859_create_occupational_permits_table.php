@@ -10,8 +10,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('occupational_permits', function (Blueprint $table) {
-            $table->bigIncrements("id") ;
-            $table->unsignedBiginteger('Applicant_id')->unique();
+            $table->bigIncrements("permit_id") ;
+            $table->unsignedBiginteger('Applicant_id');
             $table->string('CommunityTaxNumber');
             $table->string('CommunityTaxFee');
             $table->dateTime('CommunityTaxDatePaid');
@@ -22,7 +22,7 @@ return new class extends Migration
              $table->string('PoliceClearanceNo');
              $table->string('PoliceClearanceExpiryDate');
              $table->timestamp('DateIssued');
-             $table->string('PermitNo');
+             
              $table->dateTime('DateHired');
              $table->string('SignatoryID');
              $table->string('EmploymentTypeID');

@@ -11,7 +11,9 @@ class OccupationalPermit extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'permit_id' => $this -> permit_id,
             'OccupationalPermit_id'  => $this-> OccupationalPermit_id,
+            'Applicant_id'  => $this-> Applicant_id ,
             'CommunityTaxNumber'  => $this-> CommunityTaxNumber,
             'CommunityTaxFee'  => $this->  CommunityTaxFee,
             'CommunityTaxDatePaid'  => $this-> CommunityTaxDatePaid,
@@ -22,13 +24,10 @@ class OccupationalPermit extends JsonResource
             'PoliceClearanceNo'  => $this-> PoliceClearanceNo,
             'PoliceClearanceExpiryDate'  => $this-> PoliceClearanceExpiryDate,
             'DateIssued'  => $this-> DateIssued,
-            'PermitNo'  => $this-> PermitNo,
             'DateHired'  => $this-> DateHired,
-            'ApplicantID'  => $this-> ApplicantID,
             'SignatoryID'  => $this-> SignatoryID,
             'EmploymentTypeID'  => $this-> EmploymentTypeID,
             'Status'   => $this-> Status,
-            
         ]; 
     }
 }

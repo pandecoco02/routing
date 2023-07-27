@@ -22,10 +22,6 @@ const props = defineProps({
         type: Object,
         default: null,
     },
-    permitvalue: {
-        type: Boolean,
-        default: false,
-    },
 });
 
 watch(
@@ -38,9 +34,26 @@ watch(
         form.ExtensionName = value.ExtensionName;
         form.Age = value.Age;
         form.CivilStatus = value.CivilStatus;
-        form.Photo = value.Photo;           
+        form.Photo = value.Photo; 
+
+        form.Applicant_id = value.id;
+        form.CommunityTaxNumber = value.CommunityTaxNumber;
+        form.CommunityTaxFee = value.CommunityTaxFee;
+        form.CommunityTaxDatePaid = value.CommunityTaxDatePaid;
+        form.MayorsPermitNumber = value.MayorsPermitNumber;
+        form.MayorsPermitFee = value.MayorsPermitFee;
+        form.MayorsPermitDatePaid = value.MayorsPermitDatePaid;
+        form.HealthCardNumber = value.HealthCardNumber;
+        form.PoliceClearanceNo = value.PoliceClearanceNo;
+        form.PoliceClearanceExpiryDate = value.PoliceClearanceExpiryDate;
+        form.DateIssued = value.DateIssued;
+        form.DateHired = value.DateHired;
+        form.SignatoryID = value.SignatoryID;
+        form.EmploymentTypeID = value.EmploymentTypeID;
+        form.Status = value.Status;
     }
 );
+
 const initialState = {
     id: null,
     LastName: null,
@@ -51,6 +64,8 @@ const initialState = {
     Age: null,
     CivilStatus: null,
     Photo: null,
+
+    Applicant_id: null,
     CommunityTaxNumber: null,
     CommunityTaxFee: null,
     CommunityTaxDatePaid: null,
@@ -61,7 +76,6 @@ const initialState = {
     PoliceClearanceNo: null,
     PoliceClearanceExpiryDate: null,
     DateIssued: null,
-    PermitNo: null,
     DateHired: null,
     SignatoryID: null,
     EmploymentTypeID: null,
@@ -81,13 +95,16 @@ watch(
 );
 const saveApplicant = async () => {
     preloader.value = true;
-    if (props.applicant && props.applicant.id) {
+    if (props.applicant && props.applicant.id  ) {
         await updateApplicant({ ...form });
+        await updatePermit({ ...form });
     } else {
         await storeApplicant({ ...form });
+        await storePermit({ ...form });
     }
-    if (is_success.value) {
+    if (is_success.value || is_permitsuccess.value) {
         emit("reloadApplicants");
+        emit("reloadPermits");
         emit("input", false);
         Object.assign(form, initialState);
     }
@@ -201,78 +218,154 @@ const closeDialog = (value) => {
 
 
                         <div class="custom-bg custom-bg2 mt-7 pt-5">
+                            <v-text-field
+                                label="Applicant ID*" 
+                                v-model="form.Applicant_id"
+                                :permiterror-messages="
+                                    permiterrors['Applicant_id']
+                                        ? permiterrors['Applicant_id']
+                                        : []
+                                "                                 
+                            ></v-text-field>
                         <v-row>
                             <v-text-field
-                                label="CommunityTaxNumber*"                                
+                                label="CommunityTaxNumber*"  
+                                v-model="form.CommunityTaxNumber"
+                                :permiterror-messages="
+                                    permiterrors['CommunityTaxNumber']
+                                        ? permiterrors['CommunityTaxNumber']
+                                        : []
+                                "                              
                             ></v-text-field>
                         </v-row>
 
                         <v-row>
+                            
                             <v-text-field
-                                label="CommunityTaxFee*"                                
+                                label="CommunityTaxFee*" 
+                                v-model="form.CommunityTaxFee"
+                                :permiterror-messages="
+                                    permiterrors['CommunityTaxFee']
+                                        ? permiterrors['CommunityTaxFee']
+                                        : []
+                                "                                 
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="CommunityTaxDatePaid*"                                
+                                label="CommunityTaxDatePaid*" 
+                                v-model="form.CommunityTaxDatePaid"
+                                :permiterror-messages="
+                                    permiterrors['CommunityTaxDatePaid']
+                                        ? permiterrors['CommunityTaxDatePaid']
+                                        : []
+                                "                                 
                             ></v-text-field>
                         </v-row>
                        
                         <v-row>
                             <v-text-field
-                                label="MayorsPermitNumber*"                                
+                                label="MayorsPermitNumber*"
+                                v-model="form.MayorsPermitNumber"
+                                :permiterror-messages="
+                                    permiterrors['MayorsPermitNumber']
+                                        ? permiterrors['MayorsPermitNumber']
+                                        : []
+                                "                                  
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="MayorsPermitFee*"                                
+                                label="MayorsPermitFee*"
+                                v-model="form.MayorsPermitFee"
+                                :permiterror-messages="
+                                    permiterrors['MayorsPermitFee']
+                                        ? permiterrors['MayorsPermitFee']
+                                        : []
+                                "                                  
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="MayorsPermitDatePaid*"                                
+                                label="MayorsPermitDatePaid*"
+                                v-model="form.MayorsPermitDatePaid"
+                                :permiterror-messages="
+                                    permiterrors['MayorsPermitDatePaid']
+                                        ? permiterrors['MayorsPermitDatePaid']
+                                        : []
+                                "                                    
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="HealthCardNumber*"                                
+                                label="HealthCardNumber*"
+                                v-model="form.HealthCardNumber"
+                                :permiterror-messages="
+                                    permiterrors['HealthCardNumber']
+                                        ? permiterrors['HealthCardNumber']
+                                        : []
+                                "                                  
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="PoliceClearanceNo*"                                
+                                label="PoliceClearanceNo*"
+                                v-model="form.PoliceClearanceNo"
+                                :permiterror-messages="
+                                    permiterrors['PoliceClearanceNo']
+                                        ? permiterrors['PoliceClearanceNo']
+                                        : []
+                                "                                    
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="PoliceClearanceExpiryDate*"                                
+                                label="PoliceClearanceExpiryDate*"
+                                v-model="form.PoliceClearanceExpiryDate"
+                                :permiterror-messages="
+                                    permiterrors['PoliceClearanceExpiryDate']
+                                        ? permiterrors['PoliceClearanceExpiryDate']
+                                        : []
+                                "                               
                             ></v-text-field>
                         </v-row>
+                       
                         <v-row>
                             <v-text-field
-                                label="DateIssued*"                                
-                            ></v-text-field>
-                        </v-row>
-                        <v-row>
-                            <v-text-field
-                                label="Signatory*"                                
+                                label="Signatory*" 
+                                v-model="form.SignatoryID"
+                                :permiterror-messages="
+                                    permiterrors['SignatoryID']
+                                        ? permiterrors['SignatoryID']
+                                        : []
+                                "                                 
                             ></v-text-field>
                         </v-row> 
                         <v-row>
                             <v-text-field
-                                label="EmploymentTypeID*"                                
+                                label="Employment Type*"
+                                v-model="form.EmploymentTypeID"
+                                :permiterror-messages="
+                                    permiterrors['EmploymentTypeID']
+                                        ? permiterrors['EmploymentTypeID']
+                                        : []
+                                "                                  
                             ></v-text-field>
                         </v-row>
                         <v-row>
                             <v-text-field
-                                label="Status*"                                
+                                label="Status*" 
+                                v-model="form.Status"
+                                :permiterror-messages="
+                                    permiterrors['Status']
+                                        ? permiterrors['Status']
+                                        : []
+                                "                                 
                             ></v-text-field>
                         </v-row>
                     </div>
 
 
-                      
-                    
                   </v-col>  
                 </v-row>
             </v-card-text>

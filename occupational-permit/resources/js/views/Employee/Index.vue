@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import ApplicantForm from "../../components/applicants/Form.vue";
+import PermitForm from "../../components/applicants/Permit.vue";
+import usePermits from "../../composables/permits.js";
 import useApplicants from "../../composables/applicants.js";
 import { VDataTable } from "vuetify/labs/VDataTable";
 
 const { applicants, pagination, query, is_loading, getApplicants, destroyApplicant } =   useApplicants();
+const {getPermits,destroyPermit} = usePermits();
 
 const applicant = ref({});
 const show_form_modal = ref(false);
+const show_permitform_modal = ref(false);
 const headers = [
     { title: "ID", key: "id" },
     { title: "Name", key: "name" },
@@ -35,6 +39,17 @@ const deleteApplicant = async (id) => {
 const showApplicantForm = async (is_show) => {
     applicant.value = {};
     show_form_modal.value = is_show;
+};
+
+const addPermit = async (id) => {
+    applicant.value = id;
+    show_permitform_modal.value = true;
+    console.log(applicant.value);
+};
+const showPermitForm = async (is_show) => {
+    applicant.value = {};
+    show_permitform_modal.value = is_show;
+
 };
 </script>
 <template>
@@ -97,6 +112,15 @@ const showApplicantForm = async (is_show) => {
                         <v-list max-width="200px" class="p-2">
                             <div width="100%">
                                 <v-btn
+                                width="100%"
+                                color="blue"
+                                @click="addPermit(item.raw)"
+                                size="small"
+                            >
+                                Permit
+                                <v-icon end icon="mdi-sheet"></v-icon>
+                                </v-btn>
+                                <v-btn
                                     width="100%"
                                     color="green"
                                     @click="updateApplicant(item.raw)"
@@ -144,4 +168,10 @@ const showApplicantForm = async (is_show) => {
         @reloadApplicants="reloadApplicants"
         @input="showApplicantForm" 
     />
+    <permit-form
+        :value="show_permitform_modal"
+        :applicant="applicant"
+        @reloadApplicants="reloadApplicants"
+        @input="showPermitForm" 
+    /> 
 </template>

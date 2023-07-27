@@ -25,18 +25,20 @@ class OccupationalPermitController extends Controller
     {
     try{
         $occupational_permits = new OccupationalPermit();
+            $occupational_permits->Applicant_id = $request->Applicant_id;
             $occupational_permits->CommunityTaxNumber = $request->CommunityTaxNumber;
             $occupational_permits->CommunityTaxFee = $request->CommunityTaxFee;
-            $occupational_permits->CommunityTaxDatePaid = $request->CommunityTaxDatePaid;
+            $occupational_permits->CommunityTaxDatePaid = now(); //$request->CommunityTaxDatePaid;
             $occupational_permits->MayorsPermitNumber = $request->MayorsPermitNumber;
             $occupational_permits->MayorsPermitFee = $request->MayorsPermitFee;
-            $occupational_permits->MayorsPermitDatePaid = $request->MayorsPermitDatePaid;
+            $occupational_permits->MayorsPermitDatePaid = now();//$request->MayorsPermitDatePaid;
             $occupational_permits->HealthCardNumber = $request->HealthCardNumber;
             $occupational_permits->PoliceClearanceNo = $request->PoliceClearanceNo;
-            $occupational_permits->PoliceClearanceExpiryDate = $request->PoliceClearanceExpiryDate;
-            $occupational_permits->DateIssued = now()->toDateString('Ymd');
-            $occupational_permits->PermitNo = $request->PermitNo;
-            $occupational_permits->DateHired = $request->DateHired;
+            $occupational_permits->PoliceClearanceExpiryDate = now();//$request->PoliceClearanceExpiryDate;
+            $DateIssued = now()->toDateString('Ymd');
+            $occupational_permits->DateIssued = now(); 
+            
+            $occupational_permits->DateHired = now();//$request->DateHired;
             $occupational_permits->SignatoryID = $request->SignatoryID;
             $occupational_permits->EmploymentTypeID = $request->EmploymentTypeID;
             $occupational_permits->Status = $request->Status;
@@ -52,23 +54,24 @@ class OccupationalPermitController extends Controller
     public function update($id, OccupationalPermitRequest $request)
     {
         try{
-            $occupational_permits = OccupationalPermit::findOrFail($id);
-                $occupational_permits->CommunityTaxNumber = $request->CommunityTaxNumber;
-                $occupational_permits->CommunityTaxFee = $request->CommunityTaxFee;
-                $occupational_permits->CommunityTaxDatePaid = $request->CommunityTaxDatePaid;
-                $occupational_permits->MayorsPermitNumber = $request->MayorsPermitNumber;
-                $occupational_permits->MayorsPermitFee = $request->MayorsPermitFee;
-                $occupational_permits->MayorsPermitDatePaid = $request->MayorsPermitDatePaid;
-                $occupational_permits->HealthCardNumber = $request->HealthCardNumber;
-                $occupational_permits->PoliceClearanceNo = $request->PoliceClearanceNo;
-                $occupational_permits->PoliceClearanceExpiryDate = $request->PoliceClearanceExpiryDate;
-                $occupational_permits->DateIssued = now()->toDateString('Ymd');
-                $occupational_permits->PermitNo = $request->PermitNo;
-                $occupational_permits->DateHired = $request->DateHired;
-                $occupational_permits->SignatoryID = $request->SignatoryID;
-                $occupational_permits->EmploymentTypeID = $request->EmploymentTypeID;
-                $occupational_permits->Status = $request->Status;
-                
+            $occupational_permits =  OccupationalPermit::findOrFail($id);
+            $occupational_permits->Applicant_id = $request->Applicant_id;
+            $occupational_permits->CommunityTaxNumber = $request->CommunityTaxNumber;
+            $occupational_permits->CommunityTaxFee = $request->CommunityTaxFee;
+            $occupational_permits->CommunityTaxDatePaid = now(); //$request->CommunityTaxDatePaid;
+            $occupational_permits->MayorsPermitNumber = $request->MayorsPermitNumber;
+            $occupational_permits->MayorsPermitFee = $request->MayorsPermitFee;
+            $occupational_permits->MayorsPermitDatePaid = now();//$request->MayorsPermitDatePaid;
+            $occupational_permits->HealthCardNumber = $request->HealthCardNumber;
+            $occupational_permits->PoliceClearanceNo = $request->PoliceClearanceNo;
+            $occupational_permits->PoliceClearanceExpiryDate = now();//$request->PoliceClearanceExpiryDate;
+            $DateIssued = now()->toDateString('Ymd');
+            $occupational_permits->DateIssued = now(); 
+            
+            $occupational_permits->DateHired = now();//$request->DateHired;
+            $occupational_permits->SignatoryID = $request->SignatoryID;
+            $occupational_permits->EmploymentTypeID = $request->EmploymentTypeID;
+            $occupational_permits->Status = $request->Status;
                 $occupational_permits->update();
                 return response(['message' => 'Permit has been sucessfully saved', 'data' => $occupational_permits], Response::HTTP_CREATED);
         
