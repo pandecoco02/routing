@@ -2,12 +2,13 @@
 import { reactive, watch, ref, onMounted } from "vue";
 import useApplicants from "../../composables/applicants";
 import usePermits from "../../composables/permits";
-// import datetime from 'vuejs-datetimepicker';
+import useSignatory from "../../composables/signatories";
 import VueMultiselect from "vue-multiselect";
-
 
 const {permiterrors, is_permitsuccess, storePermit,updatePermit} = usePermits();
 const { errors, is_success, storeApplicant, updateApplicant } = useApplicants();
+const {signatories, getSignatories} = useSignatory();
+
 const emit = defineEmits(["reloadApplicants", "input", "reloadPermits"]);
 const props = defineProps({
     applicant: {
@@ -18,10 +19,7 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    permit: {
-        type: Object,
-        default: null,
-    },
+    
 });
 
 watch(
@@ -34,9 +32,7 @@ watch(
         form.ExtensionName = value.ExtensionName;
         form.Age = value.Age;
         form.CivilStatus = value.CivilStatus;
-        form.Photo = value.Photo; 
-
-        form.Applicant_id = value.id;
+        form.Photo = value.Photo;       
         form.CommunityTaxNumber = value.CommunityTaxNumber;
         form.CommunityTaxFee = value.CommunityTaxFee;
         form.CommunityTaxDatePaid = value.CommunityTaxDatePaid;
@@ -48,24 +44,21 @@ watch(
         form.PoliceClearanceExpiryDate = value.PoliceClearanceExpiryDate;
         form.DateIssued = value.DateIssued;
         form.DateHired = value.DateHired;
-        form.SignatoryID = value.SignatoryID;
+        form.selected_signatories = value.signatories;
+       // form.SignatoryID = value.SignatoryID;
         form.EmploymentTypeID = value.EmploymentTypeID;
         form.Status = value.Status;
     }
 );
-
 const initialState = {
     id: null,
     LastName: null,
     FirstName: null,
-    MiddleName: null,
-    middle_name: null,
+    MiddleName: null, 
     ExtensionName: null,
     Age: null,
     CivilStatus: null,
     Photo: null,
-
-    Applicant_id: null,
     CommunityTaxNumber: null,
     CommunityTaxFee: null,
     CommunityTaxDatePaid: null,
@@ -77,30 +70,42 @@ const initialState = {
     PoliceClearanceExpiryDate: null,
     DateIssued: null,
     DateHired: null,
-    SignatoryID: null,
+    //SignatoryID: null,
+    selected_signatories:[],
+    applicant_signatory:[],
     EmploymentTypeID: null,
     Status: null,
 };
 const form = reactive({ ...initialState });
 
-
-
+onMounted(()=>{
+    getSignatories();
+})
 const preloader = ref(false);
 const show_form_modal = ref(false);
+
 watch(
     () => props.value,
     (value) => {
         show_form_modal.value = value;
     }
 );
+watch(
+    () => form.selected_signatories,
+    (value) => {
+        if(value) {
+            form.applicant_signatory = value.map((x)=>x.id)
+        }
+    }
+);
 const saveApplicant = async () => {
     preloader.value = true;
     if (props.applicant && props.applicant.id  ) {
         await updateApplicant({ ...form });
-        await updatePermit({ ...form });
+       
     } else {
         await storeApplicant({ ...form });
-        await storePermit({ ...form });
+       
     }
     if (is_success.value || is_permitsuccess.value) {
         emit("reloadApplicants");
@@ -117,7 +122,7 @@ const closeDialog = (value) => {
 </script>
 
 <template>
-    <v-dialog v-model="show_form_modal" width="80%" persistent>
+    <v-dialog v-model="show_form_modal" width="60%" persistent>
         
         <v-card>
             <v-card-title>
@@ -168,18 +173,17 @@ const closeDialog = (value) => {
                                         : []
                                 "
                             ></v-text-field>
-                        </v-row>
+                        </v-row>                    
                         <v-row>
-                            <v-textarea
+                            <v-text-field
+                                type="number"
                                 label="Age"
                                 v-model="form.Age"
-                                rows="3"
+                                class="mr-1"
                                 :error-messages="
                                     errors['Age'] ? errors['Age'] : []
                                 "
-                            ></v-textarea>
-                        </v-row>
-                        <v-row>
+                            ></v-text-field>
                             <v-text-field
                                 label="Civil Status"
                                 v-model="form.CivilStatus"
@@ -190,9 +194,10 @@ const closeDialog = (value) => {
                                         : []
                                 "
                             ></v-text-field>
-                            <v-file-input v-model="form.Photo" accept="image/*" label="add Photo*" required></v-file-input>
-                            
                         </v-row> 
+                        <v-row>
+                             <v-file-input v-model="form.Photo" accept="image/*" label="add Photo*" required></v-file-input>
+                        </v-row>
                         <!-- Save and Cancel Button   -->
                         <v-row class="mt-3 mb-5">
                             <v-btn class="ma-2" color="blue-darken-1" @click="saveApplicant">
@@ -209,24 +214,9 @@ const closeDialog = (value) => {
                             </v-btn>
                         </v-row>
                     </v-col>
-                        <v-col cols="6">
-                        <div class="custom-title d-flex">
-                            <p class="ml-6 pt-1">
-                                <span>Permit</span>
-                            </p>
-                        </div>
-
-
-                        <div class="custom-bg custom-bg2 mt-7 pt-5">
-                            <v-text-field
-                                label="Applicant ID*" 
-                                v-model="form.Applicant_id"
-                                :permiterror-messages="
-                                    permiterrors['Applicant_id']
-                                        ? permiterrors['Applicant_id']
-                                        : []
-                                "                                 
-                            ></v-text-field>
+                   
+                 <v-col cols="6">
+                    <div class="custom-bg custom-bg2 mt-7 pt-5">     
                         <v-row>
                             <v-text-field
                                 label="CommunityTaxNumber*"  
@@ -240,7 +230,6 @@ const closeDialog = (value) => {
                         </v-row>
 
                         <v-row>
-                            
                             <v-text-field
                                 label="CommunityTaxFee*" 
                                 v-model="form.CommunityTaxFee"
@@ -253,6 +242,7 @@ const closeDialog = (value) => {
                         </v-row>
                         <v-row>
                             <v-text-field
+                            type="date"
                                 label="CommunityTaxDatePaid*" 
                                 v-model="form.CommunityTaxDatePaid"
                                 :permiterror-messages="
@@ -265,6 +255,7 @@ const closeDialog = (value) => {
                        
                         <v-row>
                             <v-text-field
+                            
                                 label="MayorsPermitNumber*"
                                 v-model="form.MayorsPermitNumber"
                                 :permiterror-messages="
@@ -276,6 +267,7 @@ const closeDialog = (value) => {
                         </v-row>
                         <v-row>
                             <v-text-field
+                                type="number"
                                 label="MayorsPermitFee*"
                                 v-model="form.MayorsPermitFee"
                                 :permiterror-messages="
@@ -287,6 +279,7 @@ const closeDialog = (value) => {
                         </v-row>
                         <v-row>
                             <v-text-field
+                            type="date"
                                 label="MayorsPermitDatePaid*"
                                 v-model="form.MayorsPermitDatePaid"
                                 :permiterror-messages="
@@ -320,6 +313,7 @@ const closeDialog = (value) => {
                         </v-row>
                         <v-row>
                             <v-text-field
+                               type="date"
                                 label="PoliceClearanceExpiryDate*"
                                 v-model="form.PoliceClearanceExpiryDate"
                                 :permiterror-messages="
@@ -329,9 +323,8 @@ const closeDialog = (value) => {
                                 "                               
                             ></v-text-field>
                         </v-row>
-                       
                         <v-row>
-                            <v-text-field
+                            <!-- <v-text-field
                                 label="Signatory*" 
                                 v-model="form.SignatoryID"
                                 :permiterror-messages="
@@ -339,7 +332,29 @@ const closeDialog = (value) => {
                                         ? permiterrors['SignatoryID']
                                         : []
                                 "                                 
-                            ></v-text-field>
+                            ></v-text-field> -->
+                                <v-label>Signatory:</v-label>
+                                <vue-multiselect
+                                v-model="form.selected_signatories"
+                                :options="signatories"
+                                :multiple="false"
+                                :close-on-select="true"
+                                :clear-on-select="false"
+                                :preserve-search="true"
+                                placeholder="Select signatory"
+                                label="name"
+                                track-by="name"
+                                class="mb-10 signatories"
+                                select-label=""
+                                deselect-label=""
+                            >
+                            </vue-multiselect>
+                            <span class="text-danger">{{
+                                errors["selected_signatories"]
+                                    ? errors["selected_signatories"][0]
+                                    : ""
+                            }}</span>
+                            <v-spacer></v-spacer>
                         </v-row> 
                         <v-row>
                             <v-text-field
@@ -364,17 +379,11 @@ const closeDialog = (value) => {
                             ></v-text-field>
                         </v-row>
                     </div>
-
-
-                  </v-col>  
+                  </v-col>                    
                 </v-row>
             </v-card-text>
         </v-card>
-
-    </v-dialog>
-
-
-   
+    </v-dialog>  
     <v-dialog v-model="preloader" hide-overlay persistent width="300">
         <v-card color="primary" dark>
             <v-card-text>
@@ -387,5 +396,4 @@ const closeDialog = (value) => {
             </v-card-text>
         </v-card>
     </v-dialog>
-
 </template>

@@ -23,7 +23,7 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
     Route::resource('/applicants',ApplicantController::class);
-    Route::resource('/permits',OccupationalPermitController::class);
+    Route::resource('/permits',ApplicantController::class);
     Route::resource('/types',EmploymentTypeController::class);
     Route::resource('/signatories',SignatoryController::class);
 });

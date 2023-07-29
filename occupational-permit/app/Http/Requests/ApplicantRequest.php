@@ -22,7 +22,7 @@ class ApplicantRequest extends FormRequest
                 'ExtensionName' => 'max:255',
                 'Age' => 'required|integer',
                 'CivilStatus' => 'required|string|max:255',
-                'Photo' => 'image|mimes:jpg,png,jpeg',
+                
                 'permit' => 'string|max:255'
             ];
         } 
@@ -32,8 +32,8 @@ class ApplicantRequest extends FormRequest
                 'FirstName' => 'required|string|max:255',
                 'Age' => 'required|integer',
                 'CivilStatus' => 'required|string|max:255',
-                'permit' => 'string|max:255'
-                //photo
+                
+                
             ];
         }
     }

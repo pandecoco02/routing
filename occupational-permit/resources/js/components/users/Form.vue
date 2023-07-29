@@ -35,7 +35,6 @@ watch(
         form.selected_roles = value.roles;
     }
 );
-
 const initialState = {
     id: null,
     email: null,

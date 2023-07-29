@@ -14,16 +14,16 @@ return new class extends Migration
             $table->unsignedBiginteger('Applicant_id');
             $table->string('CommunityTaxNumber');
             $table->string('CommunityTaxFee');
-            $table->dateTime('CommunityTaxDatePaid');
+            $table->string('CommunityTaxDatePaid');
             $table->string('MayorsPermitNumber');
             $table->string('MayorsPermitFee');
-            $table->dateTime('MayorsPermitDatePaid');
+            $table->string('MayorsPermitDatePaid');
              $table->string('HealthCardNumber');
              $table->string('PoliceClearanceNo');
              $table->string('PoliceClearanceExpiryDate');
              $table->timestamp('DateIssued');
              
-             $table->dateTime('DateHired');
+             $table->string('DateHired');
              $table->string('SignatoryID');
              $table->string('EmploymentTypeID');
              $table->string('Status');

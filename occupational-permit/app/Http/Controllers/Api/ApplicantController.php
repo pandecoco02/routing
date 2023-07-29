@@ -8,7 +8,9 @@ use App\Models\OccupationalPermit;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ApplicantRequest;
+use App\Http\Requests\OccupationalPermitRequest;
 use App\Http\Resources\Applicant as ApplicantResource;
+use App\Models\Signatory;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\FileService;
 class ApplicantController extends Controller
@@ -49,19 +51,40 @@ class ApplicantController extends Controller
                 }
             }
             $applicant->save();
-            //$this->storePermits($applicant->id, $request->occupational_permits);
+            $this->storePermits($request, $applicant->id);
             return response(['message' => 'Applicant has been sucessfully saved', 'data' => $applicant], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
     }
-    public function storePermits($id, $occupational_permits)
+    public function storePermits($request, $applicant_id)
     {
+        try{
+            $occupational_permits = new OccupationalPermit();
+            $occupational_permits->Applicant_id =$applicant_id;
+            $occupational_permits->CommunityTaxNumber = $request->CommunityTaxNumber;
+            $occupational_permits->CommunityTaxFee = $request->CommunityTaxFee;
+            $occupational_permits->CommunityTaxDatePaid = $request->CommunityTaxDatePaid;
+            $occupational_permits->MayorsPermitNumber = $request->MayorsPermitNumber;
+            $occupational_permits->MayorsPermitFee = $request->MayorsPermitFee;
+            $occupational_permits->HealthCardNumber = $request->HealthCardNumber;
+            $occupational_permits->PoliceClearanceNo = $request->PoliceClearanceNo;
+            $occupational_permits->PoliceClearanceExpiryDate = $request->PoliceClearanceExpiryDate;
+            $occupational_permits->DateIssued = now(); 
+            $occupational_permits->DateHired = $request->DateHired;
+            $occupational_permits->SignatoryID = $request->SignatoryID;
+            $occupational_permits->EmploymentTypeID = $request->EmploymentTypeID;
+            $occupational_permits->Status = $request->Status;
+            $occupational_permits->save();  
+          } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+         }
+    }
+    public function storeSignatory($permit_id, $signatory){
         try {
-            $applicant = new OccupationalPermit();
-            $applicant->Applicant_id = $id;
-            $applicant->save();
-            return $applicant;
+            $signatory = Signatory::findOrFail($permit_id);
+            $signatory->signatory()->sync($signatory);
+            $signatory->update();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
