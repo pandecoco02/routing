@@ -26,7 +26,6 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request)
     {
-
         try {
             $role = new Role();
             $role->name = ucwords($request->name);

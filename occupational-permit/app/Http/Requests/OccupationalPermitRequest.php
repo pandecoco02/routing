@@ -28,7 +28,7 @@ class OccupationalPermitRequest extends FormRequest
             'PoliceClearanceExpiryDate'  => 'string|max:255',
             'DateIssued'  => 'string|max:255',
             'DateHired'  => 'string|max:255',
-            'SignatoryID'  => 'string|max:255',
+            'SignatoryID'=>'max:255',
             'EmploymentTypeID'  => 'string|max:255',
             'Status'   => 'string|max:255'
         ];

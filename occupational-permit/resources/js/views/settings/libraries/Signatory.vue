@@ -9,7 +9,12 @@ const { signatories, pagination, query, is_loading, getSignatories, destroySigna
 const signatory = ref({});
 const show_form_modal = ref(false);
 const headers = [
-    { title: "Name", key: "name" },
+    {
+    title: "Name",
+    align: "start",
+    sortable: false,
+    key: "name" 
+    },
     { title: "Position", key: "position" },
     { title: "Division Name", key: "DivisionName" },
     { title: "", key: "actions" },
@@ -26,7 +31,7 @@ const reloadSignatories = async () => {
 const updateSignatory = async (row) => {
     signatory.value = row;
     show_form_modal.value = true;
-    console.log(signatory.value);
+    
 };
 const deleteSignatory = async (id) => {
     await destroySignatory(id);

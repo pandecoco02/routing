@@ -11,28 +11,24 @@ return new class extends Migration
     {
         Schema::create('occupational_permits', function (Blueprint $table) {
             $table->bigIncrements("permit_id") ;
-            $table->unsignedBiginteger('Applicant_id');
-            $table->string('CommunityTaxNumber');
-            $table->string('CommunityTaxFee');
-            $table->string('CommunityTaxDatePaid');
-            $table->string('MayorsPermitNumber');
-            $table->string('MayorsPermitFee');
-            $table->string('MayorsPermitDatePaid');
-             $table->string('HealthCardNumber');
-             $table->string('PoliceClearanceNo');
-             $table->string('PoliceClearanceExpiryDate');
-             $table->timestamp('DateIssued');
-             
-             $table->string('DateHired');
-             $table->string('SignatoryID');
-             $table->string('EmploymentTypeID');
-             $table->string('Status');
+            $table->unsignedBiginteger('Applicant_id') ->nullable();
+            $table->string('CommunityTaxNumber') ->nullable();
+            $table->string('CommunityTaxFee') ->nullable();
+            $table->string('CommunityTaxDatePaid') ->nullable();
+            $table->string('MayorsPermitNumber') ->nullable();
+            $table->string('MayorsPermitFee') ->nullable();
+            $table->string('MayorsPermitDatePaid') ->nullable();
+            $table->string('HealthCardNumber') ->nullable();
+            $table->string('PoliceClearanceNo') ->nullable();
+            $table->string('PoliceClearanceExpiryDate') ->nullable();
+            $table->timestamp('DateIssued') ->nullable();
+            $table->string('DateHired') ->nullable();
+            $table->string('EmploymentTypeID') ->nullable();
+            $table->string('Status') ->nullable();
             $table->timestamps();
             $table->foreign('Applicant_id') -> references('id') -> on('applicants')->onDelete('cascade');
         });
     }
-
-
     public function down(): void
     {
         Schema::dropIfExists('occupational_permits');

@@ -28,6 +28,7 @@ class OccupationalPermit extends JsonResource
             'SignatoryID'  => $this-> SignatoryID,
             'EmploymentTypeID'  => $this-> EmploymentTypeID,
             'Status'   => $this-> Status,
+            'signatories'=> $this->signatories ? Signatory::collection($this->signatories) : [],
         ]; 
     }
 }

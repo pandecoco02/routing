@@ -2,12 +2,13 @@
 import { reactive, watch, ref, onMounted } from "vue";
 import useApplicants from "../../composables/applicants";
 import usePermits from "../../composables/permits";
-import useSignatory from "../../composables/signatories";
+import useSignatories from "../../composables/signatories";
+import useTypes from "../../composables/types";
 import VueMultiselect from "vue-multiselect";
 
-const {permiterrors, is_permitsuccess, storePermit,updatePermit} = usePermits();
+const {permiterrors, storePermit,updatePermit} = usePermits();
 const { errors, is_success, storeApplicant, updateApplicant } = useApplicants();
-const {signatories, getSignatories} = useSignatory();
+const {signatories, getSignatories} = useSignatories();
 
 const emit = defineEmits(["reloadApplicants", "input", "reloadPermits"]);
 const props = defineProps({
@@ -44,7 +45,7 @@ watch(
         form.PoliceClearanceExpiryDate = value.PoliceClearanceExpiryDate;
         form.DateIssued = value.DateIssued;
         form.DateHired = value.DateHired;
-        form.selected_signatories = value.signatories;
+        form.SignatoryID = value.signatories;
        // form.SignatoryID = value.SignatoryID;
         form.EmploymentTypeID = value.EmploymentTypeID;
         form.Status = value.Status;
@@ -71,8 +72,9 @@ const initialState = {
     DateIssued: null,
     DateHired: null,
     //SignatoryID: null,
-    selected_signatories:[],
-    applicant_signatory:[],
+    SignatoryID:[],
+    applicant_signatories:[],
+
     EmploymentTypeID: null,
     Status: null,
 };
@@ -80,7 +82,7 @@ const form = reactive({ ...initialState });
 
 onMounted(()=>{
     getSignatories();
-})
+});
 const preloader = ref(false);
 const show_form_modal = ref(false);
 
@@ -91,10 +93,10 @@ watch(
     }
 );
 watch(
-    () => form.selected_signatories,
+    () => form.SignatoryID,
     (value) => {
         if(value) {
-            form.applicant_signatory = value.map((x)=>x.id)
+            form.applicant_signatories = value.map((x)=>x.id)
         }
     }
 );
@@ -107,7 +109,7 @@ const saveApplicant = async () => {
         await storeApplicant({ ...form });
        
     }
-    if (is_success.value || is_permitsuccess.value) {
+    if (is_success.value ) {
         emit("reloadApplicants");
         emit("reloadPermits");
         emit("input", false);
@@ -335,9 +337,9 @@ const closeDialog = (value) => {
                             ></v-text-field> -->
                                 <v-label>Signatory:</v-label>
                                 <vue-multiselect
-                                v-model="form.selected_signatories"
+                                v-model="form.SignatoryID"
                                 :options="signatories"
-                                :multiple="false"
+                                :multiple="true"
                                 :close-on-select="true"
                                 :clear-on-select="false"
                                 :preserve-search="true"

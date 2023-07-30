@@ -71,11 +71,11 @@ class ApplicantController extends Controller
             $occupational_permits->PoliceClearanceNo = $request->PoliceClearanceNo;
             $occupational_permits->PoliceClearanceExpiryDate = $request->PoliceClearanceExpiryDate;
             $occupational_permits->DateIssued = now(); 
-            $occupational_permits->DateHired = $request->DateHired;
-            $occupational_permits->SignatoryID = $request->SignatoryID;
+            $occupational_permits->DateHired = $request->DateHired;  
             $occupational_permits->EmploymentTypeID = $request->EmploymentTypeID;
             $occupational_permits->Status = $request->Status;
-            $occupational_permits->save();  
+            $occupational_permits->save(); 
+            $this->storeSignatory($occupational_permits->permit_id, $request->signatory); 
           } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
          }

@@ -6,6 +6,7 @@ use App\Models\Signatory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\SignatoryRequest;
+use Illuminate\Support\Str;
 use App\Http\Resources\Signatory as SignatoryResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +20,7 @@ class SignatoryController extends Controller
         }
 
         $signatory = isset($request->search) && $request->search ? $signatory->paginate(10) : Signatory::paginate(10);
-        return SignatoryResource::collection($signatory);
+        return SignatoryResource::collection(Signatory::paginate(10));
     }
     public function store(SignatoryRequest $request)
     {
@@ -62,7 +63,6 @@ class SignatoryController extends Controller
         }
         
     }
-
     public function destroy($id)
     {
         Signatory::findOrFail($id)->delete();
