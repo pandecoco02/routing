@@ -11,6 +11,7 @@ return new class extends Migration
     {
         Schema::create('signatories', function (Blueprint $table) {
             $table->bigIncrements("id")->unique();
+            $table->string('name');
             $table->string('LastName');
             $table->string('FirstName');
             $table->string('MiddleName') ->nullable();

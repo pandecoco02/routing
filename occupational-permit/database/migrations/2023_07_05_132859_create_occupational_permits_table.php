@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('PoliceClearanceNo') ->nullable();
             $table->string('PoliceClearanceExpiryDate') ->nullable();
             $table->timestamp('DateIssued') ->nullable();
-            $table->string('DateHired') ->nullable();
-            $table->string('EmploymentTypeID') ->nullable();
+            $table->string('DateHired') ->nullable();       
             $table->string('Status') ->nullable();
             $table->timestamps();
             $table->foreign('Applicant_id') -> references('id') -> on('applicants')->onDelete('cascade');

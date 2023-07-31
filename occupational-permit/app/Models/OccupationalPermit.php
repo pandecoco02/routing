@@ -23,8 +23,6 @@ class OccupationalPermit extends Model
         'PoliceClearanceExpiryDate',
         'DateIssued',
         'DateHired',
-        'SignatoryID',
-        'EmploymentTypeID',
         'Status',
     ];
     public function applicants(){ 

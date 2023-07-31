@@ -340,7 +340,7 @@ const closeDialog = (value) => {
                                 :clear-on-select="false"
                                 :preserve-search="true"
                                 placeholder="Select signatory"
-                                label="name"
+                                label="LastName" 
                                 track-by="LastName"
                                 class="mb-10 signatories"
                                 select-label=""
@@ -355,15 +355,7 @@ const closeDialog = (value) => {
                             <v-spacer></v-spacer>
                         </v-row> 
                         <v-row>
-                            <!-- <v-text-field
-                                label="Employment Type*"
-                                v-model="form.EmploymentTypeID"
-                                :permiterror-messages="
-                                    permiterrors['EmploymentTypeID']
-                                        ? permiterrors['EmploymentTypeID']
-                                        : []
-                                "                                  
-                            ></v-text-field> -->
+                            
                             <v-label>Occupation</v-label>
                                 <vue-multiselect
                                 v-model="form.EmploymentTypeID"

@@ -31,9 +31,7 @@ class ApplicantRequest extends FormRequest
                 'LastName' => 'required|string|max:255',
                 'FirstName' => 'required|string|max:255',
                 'Age' => 'required|integer',
-                'CivilStatus' => 'required|string|max:255',
-                
-                
+                'CivilStatus' => 'required|string|max:255',  
             ];
         }
     }
