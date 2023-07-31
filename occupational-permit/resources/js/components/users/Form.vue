@@ -49,9 +49,7 @@ const initialState = {
     selected_roles: [],
     user_roles: [],
 };
-
 const form = reactive({ ...initialState });
-
 onMounted(() => {
     getRoles();
 });

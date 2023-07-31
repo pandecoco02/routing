@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\EmploymentType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -25,10 +26,9 @@ class OccupationalPermit extends JsonResource
             'PoliceClearanceExpiryDate'  => $this-> PoliceClearanceExpiryDate,
             'DateIssued'  => $this-> DateIssued,
             'DateHired'  => $this-> DateHired,
-            'SignatoryID'  => $this-> SignatoryID,
-            'EmploymentTypeID'  => $this-> EmploymentTypeID,
             'Status'   => $this-> Status,
             'signatories'=> $this->signatories ? Signatory::collection($this->signatories) : [],
+            'employment_types' => $this->employment_types ? EmploymentType::collection($this->employment_types) : [],
         ]; 
     }
 }

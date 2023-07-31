@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ApplicantRequest;
 use App\Http\Requests\OccupationalPermitRequest;
 use App\Http\Resources\Applicant as ApplicantResource;
+use App\Models\EmploymentType;
 use App\Models\Signatory;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\FileService;
@@ -82,9 +83,18 @@ class ApplicantController extends Controller
     }
     public function storeSignatory($permit_id, $signatory){
         try {
-            $signatory = Signatory::findOrFail($permit_id);
+            $signatory = OccupationalPermit::findOrFail($permit_id);
             $signatory->signatory()->sync($signatory);
             $signatory->update();
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+    public function storeEmployment($permit_id, $employment_type){
+        try {
+            $employment_type = OccupationalPermit::findOrFail($permit_id);
+            $employment_type->employment_type()->sync($employment_type);
+            $employment_type->update();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
@@ -94,7 +104,6 @@ class ApplicantController extends Controller
        try
        { 
             $applicant = Applicant::findOrFail($id);
-
             $applicant->LastName = ucwords($request->LastName);
             $applicant->FirstName = ucwords($request->FirstName);
             $applicant->MiddleName = ucwords($request->MiddleName);

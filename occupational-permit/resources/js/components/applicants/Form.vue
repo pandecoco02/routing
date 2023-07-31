@@ -9,7 +9,7 @@ import VueMultiselect from "vue-multiselect";
 const {permiterrors, storePermit,updatePermit} = usePermits();
 const { errors, is_success, storeApplicant, updateApplicant } = useApplicants();
 const {signatories, getSignatories} = useSignatories();
-
+const {types, getTypes}= useTypes();
 const emit = defineEmits(["reloadApplicants", "input", "reloadPermits"]);
 const props = defineProps({
     applicant: {
@@ -19,8 +19,7 @@ const props = defineProps({
     value: {
         type: Boolean,
         default: false,
-    },
-    
+    },  
 });
 
 watch(
@@ -46,8 +45,7 @@ watch(
         form.DateIssued = value.DateIssued;
         form.DateHired = value.DateHired;
         form.SignatoryID = value.signatories;
-       // form.SignatoryID = value.SignatoryID;
-        form.EmploymentTypeID = value.EmploymentTypeID;
+        form.EmploymentTypeID = value.types;
         form.Status = value.Status;
     }
 );
@@ -71,17 +69,16 @@ const initialState = {
     PoliceClearanceExpiryDate: null,
     DateIssued: null,
     DateHired: null,
-    //SignatoryID: null,
     SignatoryID:[],
     applicant_signatories:[],
-
     EmploymentTypeID: null,
+    applicant_types:[],
     Status: null,
 };
 const form = reactive({ ...initialState });
-
 onMounted(()=>{
     getSignatories();
+    getTypes();
 });
 const preloader = ref(false);
 const show_form_modal = ref(false);
@@ -97,6 +94,14 @@ watch(
     (value) => {
         if(value) {
             form.applicant_signatories = value.map((x)=>x.id)
+        }
+    }
+);
+watch(
+    () => form.EmploymentTypeID,
+    (value) => {
+        if(value) {
+            form.applicant_types = value.map((x)=>x.id)
         }
     }
 );
@@ -326,15 +331,6 @@ const closeDialog = (value) => {
                             ></v-text-field>
                         </v-row>
                         <v-row>
-                            <!-- <v-text-field
-                                label="Signatory*" 
-                                v-model="form.SignatoryID"
-                                :permiterror-messages="
-                                    permiterrors['SignatoryID']
-                                        ? permiterrors['SignatoryID']
-                                        : []
-                                "                                 
-                            ></v-text-field> -->
                                 <v-label>Signatory:</v-label>
                                 <vue-multiselect
                                 v-model="form.SignatoryID"
@@ -345,21 +341,21 @@ const closeDialog = (value) => {
                                 :preserve-search="true"
                                 placeholder="Select signatory"
                                 label="name"
-                                track-by="name"
+                                track-by="LastName"
                                 class="mb-10 signatories"
                                 select-label=""
                                 deselect-label=""
                             >
                             </vue-multiselect>
                             <span class="text-danger">{{
-                                errors["selected_signatories"]
-                                    ? errors["selected_signatories"][0]
+                                errors["SignatoryID"]
+                                    ? errors["SignatoryID"][0]
                                     : ""
                             }}</span>
                             <v-spacer></v-spacer>
                         </v-row> 
                         <v-row>
-                            <v-text-field
+                            <!-- <v-text-field
                                 label="Employment Type*"
                                 v-model="form.EmploymentTypeID"
                                 :permiterror-messages="
@@ -367,7 +363,29 @@ const closeDialog = (value) => {
                                         ? permiterrors['EmploymentTypeID']
                                         : []
                                 "                                  
-                            ></v-text-field>
+                            ></v-text-field> -->
+                            <v-label>Occupation</v-label>
+                                <vue-multiselect
+                                v-model="form.EmploymentTypeID"
+                                :options="types"
+                                :multiple="true"
+                                :close-on-select="true"
+                                :clear-on-select="false"
+                                :preserve-search="true"
+                                placeholder="Select Occupation"
+                                label="name"
+                                track-by="name"
+                                class="mb-10 types"
+                                select-label=""
+                                deselect-label=""
+                            >
+                            </vue-multiselect>
+                            <span class="text-danger">{{
+                                errors["EmploymentTypeID"]
+                                    ? errors["EmploymentTypeID"][0]
+                                    : ""
+                            }}</span>
+                            <v-spacer></v-spacer>
                         </v-row>
                         <v-row>
                             <v-text-field
